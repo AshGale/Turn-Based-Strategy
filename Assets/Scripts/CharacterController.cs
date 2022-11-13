@@ -12,7 +12,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        moveTarget = transform.position;
     }
 
     // Update is called once per frame
@@ -21,7 +21,18 @@ public class CharacterController : MonoBehaviour
 
         //transform.position = transform.position + new Vector3(moveSpeed * Time.deltaTime, 0f, 0f);
 
-        transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+        if(transform.position != moveTarget)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+            if(GameManager.instance.activePlayer == this)
+            {
+                if(Vector3.Distance(transform.position, moveTarget) > .1f)
+                {
+                    CameraController.instance.SetMoveTarget(transform.position);
+                }
+            }
+        }
+
     }
 
     public void MoveToPoint(Vector3 target)
