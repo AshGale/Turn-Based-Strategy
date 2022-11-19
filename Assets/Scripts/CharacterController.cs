@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -9,10 +10,16 @@ public class CharacterController : MonoBehaviour
 
     private Vector3 moveTarget;
 
+    public NavMeshAgent meshAgent;
+    private bool isMoving;
+
+    public bool isEnemy;
+
     // Start is called before the first frame update
     void Start()
     {
         moveTarget = transform.position;
+        meshAgent.speed = moveSpeed;
     }
 
     // Update is called once per frame
@@ -21,22 +28,28 @@ public class CharacterController : MonoBehaviour
 
         //transform.position = transform.position + new Vector3(moveSpeed * Time.deltaTime, 0f, 0f);
 
-        if(transform.position != moveTarget)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+       // if(transform.position != moveTarget)//was for the capsule
+       if(isMoving == true)
+       {
+            //transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+
             if(GameManager.instance.activePlayer == this)
             {
-                if(Vector3.Distance(transform.position, moveTarget) > .1f)
+                CameraController.instance.SetMoveTarget(transform.position);
+                if (Vector3.Distance(transform.position, moveTarget) < .2f)
                 {
-                    CameraController.instance.SetMoveTarget(transform.position);
+                    isMoving = false;
                 }
             }
-        }
+       }
 
     }
 
     public void MoveToPoint(Vector3 target)
     {
         moveTarget = target;
+
+        meshAgent.SetDestination(moveTarget);
+        isMoving = true;
     }
 }
