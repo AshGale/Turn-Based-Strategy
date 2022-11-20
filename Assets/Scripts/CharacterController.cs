@@ -15,6 +15,8 @@ public class CharacterController : MonoBehaviour
 
     public bool isEnemy;
 
+    public float moveRange = 3.5f, runRange = 8f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +41,7 @@ public class CharacterController : MonoBehaviour
                 if (Vector3.Distance(transform.position, moveTarget) < .2f)
                 {
                     isMoving = false;
+                    GameManager.instance.FinishMovement();
                 }
             }
        }

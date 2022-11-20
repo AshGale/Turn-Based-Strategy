@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class MoveGrid : MonoBehaviour
 {
+    public static MoveGrid instance;
+
+    private void Awake()
+    {
+        instance = this;
+
+        //below scrips not dependant on external scripts, so is ok here
+        GenerateMoveGrid();
+        HideMovePoints();
+    }
 
     public MovePoint startPoint;
 
@@ -18,8 +28,7 @@ public class MoveGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateMoveGrid();
-        //HideMovePoints();
+
     }
 
     // Update is called once per frame
@@ -59,6 +68,28 @@ public class MoveGrid : MonoBehaviour
         foreach (MovePoint movePoint in allMovePoints)
         {
             movePoint.gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowPointsInRange(float moveRange, Vector3 centerPoint)
+    {
+        HideMovePoints();
+
+        foreach(MovePoint mp in allMovePoints)
+        {
+            if(Vector3.Distance(centerPoint, mp.transform.position) <= moveRange)
+            {
+                mp.gameObject.SetActive(true);
+
+                //ensure that no tiles are active under a player/friendly
+                foreach(CharacterController cc in GameManager.instance.allChars)
+                {
+                    if(Vector3.Distance(cc.transform.position, mp.transform.position) < .5f)
+                    {
+                        mp.gameObject.SetActive(false);
+                    }
+                }
+            }
         }
     }
 }
