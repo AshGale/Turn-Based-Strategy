@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        moveTarget = transform.position;
     }
 
     public float moveSpeed, manualMoveSpeed = 5f;
@@ -22,7 +23,6 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveTarget = transform.position;
     }
 
     // Update is called once per frame

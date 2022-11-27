@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    
+
     private void Awake()
     {
         instance = this;
@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int turnPointsRemaining;
     public int currentActionCost;
+
+    public GameObject targetDisplay;
 
     // Start is called before the first frame update
     void Start()
